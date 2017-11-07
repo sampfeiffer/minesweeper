@@ -39,6 +39,7 @@ class Board():
         Returns:
             pygame.Rect: The location of the board
         '''
+        
         screen_width, screen_height = self.screen.get_size()
 
         width = self.cols * Display.rect_size

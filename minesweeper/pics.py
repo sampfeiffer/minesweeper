@@ -1,7 +1,8 @@
+import os
 import pygame
 
 class Pics():
-    path = '/home/sam/Dropbox/Minesweeper8/minesweeperPics/'
+    path = os.path.dirname(os.path.abspath(__file__)) + '/pics/'
     bluemine = pygame.image.load(path + 'MinesweeperBlueMine.jpg')
     clock = pygame.image.load(path + 'MinesweeperClock.jpg')
     smiley = pygame.image.load(path + 'MinesweeperSmiley.jpg')
@@ -14,3 +15,4 @@ class Pics():
     red_mine = pygame.image.load(path + 'RedMine.jpg')
     flag_mine = pygame.image.load(path + 'MineWithFlag.jpg')
     flag_x = pygame.image.load(path + 'MinesweeperFlagX.jpg')
+

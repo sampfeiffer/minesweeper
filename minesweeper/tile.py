@@ -190,19 +190,27 @@ class Tile:
     def hover(self, is_left_mouse_down):
         '''
         If the tile is not flagged and not already shown, change the color appropriately.
+        
+        Args:
+            is_left_mouse_down (bool): Is the left mouse down.
         '''
         
-        if self.is_ready_to_reveal():
-            color = SOFTWHITE if is_left_mouse_down else LIGHTGRAY
-            self.draw(color)
+        if not self.is_shown:
+            if self.is_flagged:
+                self.blit(Pics.flag_scroll)
+            else:
+                self.draw(SOFTWHITE if is_left_mouse_down else LIGHTGRAY)
 
     def unhover(self):
         '''
         If the tile is not flagged and not already shown, return to base state.
         '''
         
-        if self.is_ready_to_reveal():
-            self.draw(GRAY)
+        if not self.is_shown:
+            if self.is_flagged:
+                self.blit(Pics.flag)
+            else:
+                self.draw(GRAY)
             
     def is_fully_flagged(self):
         '''
@@ -233,4 +241,4 @@ class Tile:
             self.blit(Pics.flag_x)
         
     def __str__(self):
-        return 'Tile(' + str(self.row) + ',' + str(self.col) + ',' + str(self.value) + ',' + str(self.is_mine) + ')'
+        return 'Tile(row={}, col={}, value={}, is_mine={})'.format(self.row, self.col, self.value, self.is_mine)

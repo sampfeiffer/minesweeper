@@ -9,7 +9,7 @@ class Pics():
     uhoh = pygame.image.load(path + 'MinesweeperUhOh.jpg')
     sad = pygame.image.load(path + 'MinesweeperSad.jpg')
     sunglasses = pygame.image.load(path + 'MinesweeperSunglass.jpg')
-    scroll = pygame.image.load(path + 'MinesweeperFlagScroll.jpg')
+    flag_scroll = pygame.image.load(path + 'MinesweeperFlagScroll.jpg')
     flag = pygame.image.load(path + 'MinesweeperFlag.jpg')
     mine = pygame.image.load(path + 'Mine.jpg')
     red_mine = pygame.image.load(path + 'RedMine.jpg')

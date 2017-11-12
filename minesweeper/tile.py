@@ -1,4 +1,5 @@
 import pygame
+from tile_reveal_result import TileRevealResult
 from display_params import Display
 from pics import Pics
 from colors import *
@@ -105,67 +106,54 @@ class Tile:
         if self.is_ready_to_reveal():
             self.draw(SOFTWHITE)
             
-    def left_click_up(self):
+    def left_click_up(self, is_shortcut_click=False):
         '''
-        Response when the left mouse is released over the tile
+        Reveal the tile if possible and/or trigger the shortcut click
         
+        Args:
+            is_shortcut_click (booL): Is the click a shortcut click?
         Returns:
-            int: The number of non-mine tiles uncovered TODO
+            TileRevealResult: The aggregated tile reveal result from the tile itself and all tiles revealed via the shortcut click
         '''
         
-        non_mines_uncovered = 0
-        hit_mine = False
-        if self.is_ready_to_reveal():
-            self.is_shown = True
-            if self.is_mine:
-               hit_mine = True
+        if self.is_flagged:
+            return TileRevealResult()
+        else:
+            if self.is_shown:
+                if is_shortcut_click:
+                    return self.left_click_up_neighbors()
+                else:
+                    return TileRevealResult()
             else:
-                tile_click_result = self.show_value()
-                non_mines_uncovered += tile_click_result['non_mines_uncovered']
-                if tile_click_result['hit_mine']:
-                    hit_mine = True
-                    
-        return {'non_mines_uncovered': non_mines_uncovered, 'hit_mine': hit_mine}
+                if self.is_mine:
+                    return TileRevealResult(hit_mine=True, mine_tiles=[self])
+                else:
+                    self.show_value()
+                    if self.value > 0:
+                        return TileRevealResult(non_mines_uncovered=1)
+                    else:
+                        return self.left_click_up_neighbors(non_mines_uncovered=1)
+    
+    def left_click_up_neighbors(self, non_mines_uncovered=0):
+        '''
+        Left click up all the neighbor tiles of the current tile.
         
+        Args:
+            non_mines_uncovered (int): How many non-mine tiles were uncovered already from this click?
+        Returns:
+            TileRevealResult: The aggregated tile reveal result from the tile itself and all tiles revealed via the shortcut click
+        '''
+        
+        return TileRevealResult(non_mines_uncovered) + sum(tile.left_click_up() for tile in self.neighbors)
+                    
     def show_value(self):
         '''
-        Player left clicked up on an unflagged non-mine. Show the value.
-        
-        Returns:
-            dict: The number of non-mine tiles uncovered TODO
+        Player left clicked up on an unflagged non-mine. Show the value and mark as shown.
         '''
         
-        text = Display.basic_font.render(' {0} '.format(' ' if self.value == 0 else self.value), True, self.color, SOFTWHITE)
+        self.is_shown = True
+        text = Display.basic_font.render(' {} '.format(' ' if self.value == 0 else self.value), True, self.color, SOFTWHITE)
         self.blit(text, background_color=SOFTWHITE)
-        
-        non_mines_uncovered = 1
-        hit_mine = False
-        if self.value == 0:
-            tile_click_result = self.left_click_up_neighbors()
-            non_mines_uncovered += tile_click_result['non_mines_uncovered']
-            if tile_click_result['hit_mine']:
-                hit_mine = True
-        
-        return {'non_mines_uncovered': non_mines_uncovered, 'hit_mine': hit_mine}
-        
-    def left_click_up_neighbors(self):
-        '''
-        Left-click-up on all the tile's negihbors
-        
-        Returns:
-            TODO
-        '''
-        
-        non_mines_uncovered = 0
-        hit_mine = False
-        
-        for tile in self.neighbors:
-            tile_click_result = tile.left_click_up()
-            non_mines_uncovered += tile_click_result['non_mines_uncovered']
-            if tile_click_result['hit_mine']:
-                hit_mine = True
-                
-        return {'non_mines_uncovered': non_mines_uncovered, 'hit_mine': hit_mine}        
         
     def toggle_flag(self):
         '''
@@ -185,7 +173,6 @@ class Tile:
                 return 1
                 
         return 0
-                
         
     def hover(self, is_left_mouse_down):
         '''

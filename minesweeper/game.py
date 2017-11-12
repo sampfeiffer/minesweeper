@@ -143,22 +143,23 @@ class Game():
                 self.update_reset_button()
                 if self.is_new_game:
                     self.first_move(tile)
-                tile_click_result = tile.left_click_up()
-                self.process_tile_reveal(tile, tile_click_result)
-                self.board.update_tile_hover(tile, self.is_left_mouse_down, self.is_right_mouse_down)
+                tile_reveal_result = tile.left_click_up()
+                self.process_tile_reveal(tile_reveal_result)
+                if not self.is_game_over:
+                    self.board.update_tile_hover(tile, self.is_left_mouse_down, self.is_right_mouse_down)
                 
-    def process_tile_reveal(self, tile, tile_click_result):
+    def process_tile_reveal(self, tile_reveal_result):
         '''
         Processes the result of clicking tile(s)
         
         Args:
-            tile (Tile): The tile to be revealed
-            tile_click_result (TODO):
+            tile_reveal_result (TileRevealResult): The result of the tile reveal. 
+                This can potentially refer to multiple tiles revealed in a cluster or shortcut click.
         '''
         
-        self.num_of_hidden_non_mines_tiles -= tile_click_result['non_mines_uncovered']
-        if tile_click_result['hit_mine']:
-            self.lose_game(tile)
+        self.num_of_hidden_non_mines_tiles -= tile_reveal_result.non_mines_uncovered
+        if tile_reveal_result.hit_mine:
+            self.lose_game(tile_reveal_result.mine_tiles)
         elif self.num_of_hidden_non_mines_tiles == 0:
             self.win_game()
         
@@ -233,21 +234,21 @@ class Game():
         tile = self.board.get_event_tile(event.pos)
         
         if not self.is_new_game and not self.is_game_over and tile is not None and tile.is_shown and tile.is_fully_flagged():
-            tile_click_result = tile.left_click_up_neighbors()
-            self.process_tile_reveal(tile, tile_click_result)
+            tile_reveal_result = tile.left_click_up_neighbors()
+            self.process_tile_reveal(tile_reveal_result)
         
-    def lose_game(self, losing_tile):
+    def lose_game(self, losing_tiles):
         '''
         The player clicked a mine. The game ends.
         
         Args:
-            losing_tile (Tile): The tile containing a mine that was revealed to end the game
+            losing_tiles (list<Tile>): The list of tiles containing a mine that was revealed to end the game
         '''
         
         self.is_game_over = True
         self.is_game_lost = True
         self.reset_button.lost_game()
-        self.board.reveal_all_tiles(losing_tile)
+        self.board.reveal_all_tiles(losing_tiles)
         
     def win_game(self):
         '''

@@ -192,13 +192,13 @@ class Board():
             for neighbor in tile.neighbors:
                 neighbor.unhover()
         
-    def reveal_all_tiles(self, losing_tile):
+    def reveal_all_tiles(self, losing_tiles):
         '''
         Reveal all the tiles with the correct status. This is used when the game is lost.
         
         Args:
-            losing_tile (Tile): The tile containing a mine that was revealed to end the game
+            losing_tile (list<Tile>): The list of tiles containing a mine that was revealed to end the game
         '''
         
         for tile in self.flattened_board:
-            tile.reveal(tile == losing_tile)
+            tile.reveal(tile in losing_tiles)

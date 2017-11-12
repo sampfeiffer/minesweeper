@@ -23,19 +23,13 @@ class MineCounter:
         self.print_mine_counter()
         
     def init_draw(self):
-        '''
-        Draws the mine symbol and defines the mine counter rect to show the number of unflagged mines left
-        '''
-        
+        '''Draws the mine symbol and defines the mine counter rect to show the number of unflagged mines left'''
         screen_width, screen_height = self.screen.get_size()
         self.screen.blit(Pics.bluemine, (Display.margin_side, screen_height - 52))
         self.rect = pygame.Rect(Display.margin_side + Pics.bluemine.get_width() + 4, screen_height - 50, 60, 40)
 
     def print_mine_counter(self):
-        '''
-        Prints the number of unflagged mines left on the counter rect
-        '''
-        
+        '''Prints the number of unflagged mines left on the counter rect'''
         pygame.draw.rect(self.screen, GRAY, self.rect)
         self.screen.blit(self.get_mine_counter_text(), self.rect)
         

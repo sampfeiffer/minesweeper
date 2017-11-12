@@ -119,10 +119,7 @@ class Board():
             tile.set_mine()
 
     def set_tile_colors(self):
-        '''
-        Sets the color of each tile on the board
-        
-        '''
+        '''Sets the color of each tile on the board'''
         for tile in self.flattened_board:
             tile.set_color()
 

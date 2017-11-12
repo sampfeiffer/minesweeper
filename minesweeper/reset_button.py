@@ -26,10 +26,7 @@ class ResetButton:
         self.init_draw()
         
     def init_draw(self):
-        '''
-        Defines the reset button rect and draws the smiley face in the reset button
-        '''
-        
+        '''Defines the reset button rect and draws the smiley face in the reset button'''
         screen_width, screen_height = self.screen.get_size()
         self.rect = pygame.Rect(screen_width / 2 - Pics.smiley.get_width() / 2, 5, Pics.smiley.get_width(), Pics.smiley.get_height())
         self.draw_smiley()
@@ -45,39 +42,27 @@ class ResetButton:
         self.screen.blit(pic, self.rect)
         
     def draw_uhoh(self):
-        '''
-        Prints the uhoh picture in the reset button
-        '''
-        
+        '''Prints the uhoh picture in the reset button'''
         if not self.is_uhoh:
             self.draw(Pics.uhoh)
             self.is_smiley = False
             self.is_uhoh = True
             
     def draw_smiley(self):
-        '''
-        Prints the smiley picture in the reset button
-        '''
-        
+        '''Prints the smiley picture in the reset button'''
         if not self.is_smiley and not self.is_hovered:
             self.draw(Pics.smiley)
             self.is_smiley = True
             self.is_uhoh = False
             
     def draw_sunglasses(self):
-        '''
-        Prints the sunglasses picture in the reset button
-        '''
-        
+        '''Prints the sunglasses picture in the reset button'''
         self.draw(Pics.sunglasses)
         self.is_smiley = False
         self.is_uhoh = False
         
     def draw_sad(self):
-        '''
-        Prints the sad picture in the reset button
-        '''
-        
+        '''Prints the sad picture in the reset button'''
         self.draw(Pics.sad)
         self.is_smiley = False
         self.is_uhoh = False
@@ -108,19 +93,13 @@ class ResetButton:
         return self.rect.collidepoint(event_position)
         
     def hover(self):
-        '''
-        React to the mouse hovering over the reset button
-        '''
-        
+        '''React to the mouse hovering over the reset button'''
         if not self.is_hovered:
             self.is_hovered = True
             self.draw_uhoh()
         
     def unhover(self):
-        '''
-        React to the mouse not hovering over the reset button
-        '''
-        
+        '''React to the mouse not hovering over the reset button'''
         if self.is_hovered:
             self.is_hovered = False
             if self.is_game_lost:
@@ -131,19 +110,12 @@ class ResetButton:
                 self.draw_smiley()
                 
     def lost_game(self):
-        '''
-        Lost the game
-        '''
-        
+        '''Lost the game'''
         self.is_game_over = True
         self.is_game_lost = True
         self.draw(Pics.sad)
         
     def won_game(self):
-        '''
-        Won the game
-        '''
-        
+        '''Won the game'''
         self.is_game_over = True
         self.draw_sunglasses()
-            

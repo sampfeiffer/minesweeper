@@ -51,7 +51,7 @@ class Tile:
         Draws the tile with the given color on the screen
         
         Args:
-            color ((int, int, int)): The RGB color value
+            color ((int, int, int)): The RGB color value. Defaults to GRAY.
         '''
         
         pygame.draw.rect(self.screen, color, self.location)
@@ -69,12 +69,8 @@ class Tile:
             self.draw(background_color)
         self.screen.blit(content, self.location)
         
-        
     def set_mine(self):
-        '''
-        Tag the tile as a mine. Add 1 to each neighbor's value.
-        '''
-        
+        '''Tag the tile as a mine. Add 1 to each neighbor's value.'''
         self.is_mine = True
         for neighbor_tile in self.neighbors:
             neighbor_tile.value += 1
@@ -147,10 +143,7 @@ class Tile:
         return TileRevealResult(non_mines_uncovered) + sum(tile.left_click_up() for tile in self.neighbors)
                     
     def show_value(self):
-        '''
-        Player left clicked up on an unflagged non-mine. Show the value and mark as shown.
-        '''
-        
+        '''Player left clicked up on an unflagged non-mine. Show the value and mark as shown.'''
         self.is_shown = True
         text = Display.basic_font.render(' {} '.format(' ' if self.value == 0 else self.value), True, self.color, SOFTWHITE)
         self.blit(text, background_color=SOFTWHITE)
@@ -189,10 +182,7 @@ class Tile:
                 self.draw(SOFTWHITE if is_left_mouse_down else LIGHTGRAY)
 
     def unhover(self):
-        '''
-        If the tile is not flagged and not already shown, return to base state.
-        '''
-        
+        '''If the tile is not flagged and not already shown, return to base state.'''
         if not self.is_shown:
             if self.is_flagged:
                 self.blit(Pics.flag)

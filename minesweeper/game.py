@@ -117,11 +117,6 @@ class Game():
             tile = self.board.get_event_tile(event.pos)
             if tile is not None:
                 self.board.update_tile_hover(tile, self.is_left_mouse_down, self.is_right_mouse_down)
-            #~ if self.is_right_mouse_down:
-                #~ for tile in self.board.hovered_tiles[0].neighbors:
-                    #~ tile.left_click_down()
-            #~ for tile in self.board.hovered_tiles:
-                #~ tile.left_click_down()
     
     def left_mouse_up_handler(self, event):
         '''
@@ -187,8 +182,9 @@ class Game():
         
         tile = self.board.get_event_tile(event.pos)
         if not self.is_new_game and not self.is_game_over and tile is not None:
-            change_in_unflagged_mines = tile.toggle_flag()
-            self.mine_counter.update(change_in_unflagged_mines)
+            if not self.is_left_mouse_down:
+                change_in_unflagged_mines = tile.toggle_flag()
+                self.mine_counter.update(change_in_unflagged_mines)
             self.board.update_tile_hover(tile, self.is_left_mouse_down, self.is_right_mouse_down)
     
     def right_mouse_up_handler(self, event):
@@ -233,9 +229,11 @@ class Game():
         
         tile = self.board.get_event_tile(event.pos)
         
-        if not self.is_new_game and not self.is_game_over and tile is not None and tile.is_shown and tile.is_fully_flagged():
-            tile_reveal_result = tile.left_click_up_neighbors()
-            self.process_tile_reveal(tile_reveal_result)
+        if not self.is_new_game and not self.is_game_over and tile is not None:
+            self.update_reset_button()        
+            if tile.is_shown and tile.is_fully_flagged():
+                tile_reveal_result = tile.left_click_up_neighbors()
+                self.process_tile_reveal(tile_reveal_result)
         
     def lose_game(self, losing_tiles):
         '''

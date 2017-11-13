@@ -38,7 +38,7 @@ class Timer:
     def get_timer_text(self):
         '''
         Returns:
-            pygame.font.SysFont: The formatted timer value in seconds to show on the gui
+            pygame.font.SysFont: The formatted timer value in seconds to show on the screen
         '''
         
         return Display.counter_font.render(str(self.seconds).zfill(3), True, BLACK, GRAY)

@@ -5,6 +5,7 @@ from board import Board
 from timer import Timer
 from mine_counter import MineCounter
 from reset_button import ResetButton
+from high_score import HighScore
 from display_params import Display
 from colors import *
 from constants import LEFT_CLICK, RIGHT_CLICK
@@ -54,6 +55,7 @@ class Game():
         self.timer = Timer(self.screen)
         self.mine_counter = MineCounter(self.num_of_mines, self.screen)
         self.reset_button = ResetButton(self.screen)
+        self.high_score = HighScore(self.rows, self.cols, self.num_of_mines, self.screen)
         self.board = Board(self.rows, self.cols, self.num_of_mines, self.screen)
         self.play_game()
         
@@ -255,6 +257,7 @@ class Game():
         
         self.is_game_over = True
         self.reset_button.won_game()
+        self.high_score.update(self.timer.seconds)
         
     def update_reset_button(self):
         '''

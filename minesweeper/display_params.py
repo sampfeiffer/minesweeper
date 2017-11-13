@@ -6,7 +6,7 @@ class Display():
     margin_bottom = 65
     spot_size = 19
     rect_size = spot_size + 1
-    min_screen_width = 250
+    min_screen_width = 350
 
     frame_rate = 50
 

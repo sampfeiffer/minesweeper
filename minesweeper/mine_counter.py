@@ -36,7 +36,7 @@ class MineCounter:
     def get_mine_counter_text(self):
         '''
         Returns:
-            pygame.font.SysFont: The formatted num_of_unflagged_mines value to show on the gui
+            pygame.font.SysFont: The formatted num_of_unflagged_mines value to show on the screen
         '''
         
         return Display.counter_font.render(str(self.num_of_unflagged_mines), True, BLACK, GRAY)

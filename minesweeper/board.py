@@ -166,7 +166,7 @@ class Board():
         '''
         
         is_both_mouse_down = is_left_mouse_down and is_right_mouse_down
-        self.clear_hovered_tiles_list(is_both_mouse_down)
+        self.clear_hovered_tiles_list()
         
         if tile is not None:
             tile.hover(is_left_mouse_down)
@@ -175,13 +175,8 @@ class Board():
                 for neighbor in tile.neighbors:
                     neighbor.hover(is_left_mouse_down)
 
-    def clear_hovered_tiles_list(self, is_both_mouse_down):
-        '''
-        Remove reaction from tiles no longer hovered
-        
-        Args:
-            is_both_mouse_down (bool): Are both the left and right mouse currently pressed down
-        '''
+    def clear_hovered_tiles_list(self):
+        '''Remove reaction from tiles no longer hovered'''
         
         for tile in self.hovered_tiles:
             tile.unhover()

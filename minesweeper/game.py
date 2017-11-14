@@ -255,6 +255,7 @@ class Game():
         The player clicked all non mine tiles. The game ends.
         '''
         
+        self.board.clear_hovered_tiles_list()
         self.is_game_over = True
         self.reset_button.won_game()
         self.high_score.update(self.timer.seconds)

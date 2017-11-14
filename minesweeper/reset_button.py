@@ -1,6 +1,5 @@
 import pygame
 from display_params import Display
-from colors import *
 from pics import Pics
 
 

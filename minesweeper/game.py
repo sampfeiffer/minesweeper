@@ -7,7 +7,7 @@ from mine_counter import MineCounter
 from reset_button import ResetButton
 from high_score import HighScore
 from display_params import Display
-from colors import *
+from colors import NAVYBLUE
 from constants import LEFT_CLICK, RIGHT_CLICK
 
 

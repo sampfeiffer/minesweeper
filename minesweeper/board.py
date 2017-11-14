@@ -2,7 +2,7 @@ import random
 import pygame
 from tile import Tile
 from display_params import Display
-from colors import *
+from colors import GRAY, AQUA
 
 class Board():
     '''
@@ -49,18 +49,13 @@ class Board():
         return pygame.Rect(left, Display.margin_top, width, height)
         
     def create_tiles(self):
-        '''
-        Creates the 2 dimensional array of Tile objects
-        '''
-        
+        '''Creates the 2 dimensional array of Tile objects'''
         self.board = [[Tile(row, col, self.screen, self.location.left) for col in xrange(self.cols)] for row in xrange(self.rows)]
         self.flattened_board = [tile for row in self.board for tile in row] # used for easier looping
         
     def set_neighbors(self):
-        '''
-        Set the the neighbor tiles of each tile on the board
-        '''
-
+        '''Set the the neighbor tiles of each tile on the board'''
+        
         # The eight directions to check for plausible neighbors
         directions = ((-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0))
 
@@ -72,10 +67,7 @@ class Board():
                     tile.neighbors.append(self.board[neighbor_x][neighbor_y])
                     
     def draw(self):
-        '''
-        Draws the board and all its tiles on the screen
-        '''
-        
+        '''Draws the board and all its tiles on the screen'''
         for tile in self.flattened_board:
             tile.draw(GRAY)
         
@@ -177,7 +169,6 @@ class Board():
 
     def clear_hovered_tiles_list(self):
         '''Remove reaction from tiles no longer hovered'''
-        
         for tile in self.hovered_tiles:
             tile.unhover()
             self.hovered_tiles.remove(tile)

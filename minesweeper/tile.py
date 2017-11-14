@@ -2,7 +2,7 @@ import pygame
 from tile_reveal_result import TileRevealResult
 from display_params import Display
 from pics import Pics
-from colors import *
+from colors import COLORS, SOFTWHITE, LIGHTGRAY, GRAY
 
 class Tile:
     '''

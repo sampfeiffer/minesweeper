@@ -1,5 +1,6 @@
 import pygame
 
+
 class Display():
     margin_side = 20
     margin_top = 40

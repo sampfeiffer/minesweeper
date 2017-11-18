@@ -1,9 +1,10 @@
 import os
 import pygame
 
+
 class Pics():
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pics')
-    
+
     bluemine = pygame.image.load(os.path.join(path, 'MinesweeperBlueMine.jpg'))
     clock = pygame.image.load(os.path.join(path, 'MinesweeperClock.jpg'))
     smiley = pygame.image.load(os.path.join(path, 'MinesweeperSmiley.jpg'))
@@ -16,4 +17,3 @@ class Pics():
     red_mine = pygame.image.load(os.path.join(path, 'RedMine.jpg'))
     flag_mine = pygame.image.load(os.path.join(path, 'MineWithFlag.jpg'))
     flag_x = pygame.image.load(os.path.join(path, 'MinesweeperFlagX.jpg'))
-

@@ -1,5 +1,4 @@
 # TODO
-- bin directory
 - setup.py
 - test cases
 - proper sorting for the high scores

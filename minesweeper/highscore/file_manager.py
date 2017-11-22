@@ -1,4 +1,5 @@
 import os
+import csv
 from record import Record
 
 
@@ -6,8 +7,6 @@ class FileManager:
     '''
     This class manages the high score file
     '''
-
-    file_header = 'rows,cols,mines,highscore\n'
 
     def __init__(self):
         '''Gets the high score filename and create the file if it does not yet exist'''
@@ -32,7 +31,7 @@ class FileManager:
 
         self.create_local_dir(local_dir)
 
-        return os.path.join(local_dir, 'high_score.txt')
+        return os.path.join(local_dir, 'high_score.csv')
 
     def create_local_dir(self, local_dir):
         '''
@@ -55,7 +54,7 @@ class FileManager:
     def write_header(self):
         '''Writes the header to the high score file'''
         with open(self.high_score_file, 'w') as f:
-            f.write(FileManager.file_header)
+            f.write('rows,cols,mines,highscore\n')
 
     def parse_high_score_file(self):
         '''
@@ -67,22 +66,22 @@ class FileManager:
 
         # Read the entire high score file
         with open(self.high_score_file, 'r') as f:
-            lines = f.readlines()
+            lines = csv.reader(f)
 
-        # Return each line (except the header) parsed into a Record object
-        return [self.parse_high_score_line(line) for line in lines[1:]]
+            # Return each line (except the header) parsed into a Record object
+            return [self.parse_high_score_line(line) for line in list(lines)[1:]]
 
     def parse_high_score_line(self, line):
         '''
         Parses a single line of the high score file. This is not intended to work for the header.
 
         Args:
-            line (str): A single raw line of the high score file
+            line (list<str>): A single line of the high score file as a list of the comma separated strings
         Returns:
             Record: A Record object
         '''
 
-        rows, cols, mines, high_score = [int(num) for num in line.split(',')]
+        rows, cols, mines, high_score = [int(num) for num in line]
         return Record(rows, cols, mines, high_score)
 
     def get_high_score(self, rows, cols, mines):
@@ -140,4 +139,6 @@ class FileManager:
         # Write the sorted records (and header) to the high score file
         self.write_header()
         with open(self.high_score_file, 'a') as f:
-            f.writelines(str(record) + '\n' for record in all_high_scores)
+            output_writer = csv.writer(f)
+            for record in all_high_scores:
+                output_writer.writerow(record.as_tuple())

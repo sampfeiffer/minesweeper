@@ -1,8 +1,10 @@
+'''This module contains the Record class which represents a single high score record.'''
+
 from functools import total_ordering
 
 
 @total_ordering
-class Record:
+class Record(object):
     '''
     This class represents a single high score record
     '''

@@ -1,3 +1,5 @@
+'''This module contains the Game class which represents a single Minesweeper game.'''
+
 import sys
 import pygame
 from pygame.locals import QUIT, MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN
@@ -6,12 +8,12 @@ from timer import Timer
 from mine_counter import MineCounter
 from reset_button import ResetButton
 from highscore.high_score import HighScore
-from display_params import Display
-from colors import NAVYBLUE
+import display_params
+import colors
 from constants import LEFT_CLICK, RIGHT_CLICK
 
 
-class Game():
+class Game(object):
     '''
     This class represents a single Minesweeper game
     '''
@@ -39,10 +41,12 @@ class Game():
         pygame.init()
         pygame.display.set_caption('Minesweeper')
 
-        self.screen_width = max(Display.rect_size * self.cols + 2 * Display.margin_side, Display.min_screen_width)
-        self.screen_height = Display.rect_size * self.rows + Display.margin_top + Display.margin_bottom
+        self.screen_width = max(display_params.RECT_SIZE * self.cols + 2 * display_params.MARGIN_SIDE,
+                                display_params.MIN_SCREEN_WIDTH)
+        self.screen_height = display_params.RECT_SIZE * self.rows + display_params.MARGIN_TOP + \
+            display_params.MARGIN_BOTTOM
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        self.screen.fill(NAVYBLUE)
+        self.screen.fill(colors.NAVYBLUE)
 
         pygame.display.update()
 
@@ -77,7 +81,7 @@ class Game():
         '''
         while True:
             if self.is_new_game or self.is_game_over:
-                pygame.time.wait(1000 / Display.frame_rate)
+                pygame.time.wait(1000 / display_params.FRAME_RATE)
             else:
                 self.timer.update()
             self.event_handler()

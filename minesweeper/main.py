@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+'''Main entry point for running the Minesweeper game.'''
+
 import argparse
 from game import Game
 
@@ -27,9 +29,14 @@ def parse_args():
     return args
 
 
-if __name__ == '__main__':
+def main():
+    '''Parses the command line arguments and starts a Minesweeper game.'''
     # Parse the command line arguments
     args = parse_args()
 
     # Start a game of Minesweeper
     Game(args.rows, args.cols, args.mines)
+
+
+if __name__ == '__main__':
+    main()

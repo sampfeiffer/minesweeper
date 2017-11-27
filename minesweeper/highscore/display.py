@@ -1,9 +1,11 @@
+'''This module contains the Display class which controls the high score display.'''
+
 import pygame
 import display_params
-from colors import BLACK, GRAY
+import colors
 
 
-class Display:
+class Display(object):
     '''
     This class controls the high score display on the screen
     '''
@@ -26,10 +28,11 @@ class Display:
             high_score (int): The high score value
         '''
 
-        pygame.draw.rect(self.screen, GRAY, self.rect)
-        self.screen.blit(self.get_high_score_text(high_score), self.rect)
+        pygame.draw.rect(self.screen, colors.GRAY, self.rect)
+        self.screen.blit(Display.get_high_score_text(high_score), self.rect)
 
-    def get_high_score_text(self, high_score):
+    @staticmethod
+    def get_high_score_text(high_score):
         '''
         Args:
             high_score (int): The high score value
@@ -37,4 +40,5 @@ class Display:
             pygame.font.SysFont: The formatted high score value to show on the screen
         '''
 
-        return display_params.Display.basic_font.render(' High Score: ' + str(high_score), True, BLACK, GRAY)
+        return display_params.BASIC_FONT.render(' High Score: ' + str(high_score), True, colors.BLACK,
+                                                colors.GRAY)

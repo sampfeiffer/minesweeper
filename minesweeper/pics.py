@@ -1,19 +1,21 @@
+'''This module defines several images used in the Minesweeper game'''
+
 import os
 import pygame
 
 
-class Pics():
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pics')
+# The path where all the pics are located
+PICS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pics')
 
-    bluemine = pygame.image.load(os.path.join(path, 'MinesweeperBlueMine.jpg'))
-    clock = pygame.image.load(os.path.join(path, 'MinesweeperClock.jpg'))
-    smiley = pygame.image.load(os.path.join(path, 'MinesweeperSmiley.jpg'))
-    uhoh = pygame.image.load(os.path.join(path, 'MinesweeperUhOh.jpg'))
-    sad = pygame.image.load(os.path.join(path, 'MinesweeperSad.jpg'))
-    sunglasses = pygame.image.load(os.path.join(path, 'MinesweeperSunglass.jpg'))
-    flag_scroll = pygame.image.load(os.path.join(path, 'MinesweeperFlagScroll.jpg'))
-    flag = pygame.image.load(os.path.join(path, 'MinesweeperFlag.jpg'))
-    mine = pygame.image.load(os.path.join(path, 'Mine.jpg'))
-    red_mine = pygame.image.load(os.path.join(path, 'RedMine.jpg'))
-    flag_mine = pygame.image.load(os.path.join(path, 'MineWithFlag.jpg'))
-    flag_x = pygame.image.load(os.path.join(path, 'MinesweeperFlagX.jpg'))
+BLUE_MINE = pygame.image.load(os.path.join(PICS_PATH, 'MinesweeperBlueMine.jpg'))
+CLOCK = pygame.image.load(os.path.join(PICS_PATH, 'MinesweeperClock.jpg'))
+SMILEY = pygame.image.load(os.path.join(PICS_PATH, 'MinesweeperSmiley.jpg'))
+UH_OH = pygame.image.load(os.path.join(PICS_PATH, 'MinesweeperUhOh.jpg'))
+SAD = pygame.image.load(os.path.join(PICS_PATH, 'MinesweeperSad.jpg'))
+SUNGLASSES = pygame.image.load(os.path.join(PICS_PATH, 'MinesweeperSunglass.jpg'))
+FLAG_SCROLL = pygame.image.load(os.path.join(PICS_PATH, 'MinesweeperFlagScroll.jpg'))
+FLAG = pygame.image.load(os.path.join(PICS_PATH, 'MinesweeperFlag.jpg'))
+MINE = pygame.image.load(os.path.join(PICS_PATH, 'Mine.jpg'))
+RED_MINE = pygame.image.load(os.path.join(PICS_PATH, 'RedMine.jpg'))
+FLAG_MINE = pygame.image.load(os.path.join(PICS_PATH, 'MineWithFlag.jpg'))
+FLAG_X = pygame.image.load(os.path.join(PICS_PATH, 'MinesweeperFlagX.jpg'))

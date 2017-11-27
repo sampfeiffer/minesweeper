@@ -1,8 +1,10 @@
+'''This module contains the HighScore class represents a high score for a given row/col/mine setting'''
+
 from file_manager import FileManager
 from display import Display
 
 
-class HighScore:
+class HighScore(object):
     '''
     This class keeps track of the high score and shows it on the screen.
     High scores are maintained individually for each row/col/mine setting.

@@ -1,22 +1,24 @@
+'''This module contains the Tile class which represents a single tile on the Minesweeper board.'''
+
 import pygame
 from tile_reveal_result import TileRevealResult
-from display_params import Display
-from pics import Pics
-from colors import COLORS, SOFTWHITE, LIGHTGRAY, GRAY
+import display_params
+import pics
+import colors
 
 
-class Tile:
+class Tile(object):
     '''
     This class represents a single tile on the minesweeper board
     '''
 
-    def __init__(self, row, col, screen, offset=Display.margin_side):
+    def __init__(self, row, col, screen, offset=display_params.MARGIN_SIDE):
         '''
         Args:
             row (int): The row number of the tile
             col (int): The col number of the tile
             screen (pygame.display): The screen on which to draw the rect
-            offset (int): The left most part of the board. Default is Display.margin_side.
+            offset (int): The left most part of the board. Default is display_params.MARGIN_SIDE.
         '''
 
         self.row = row
@@ -40,14 +42,14 @@ class Tile:
             pygame.Rect: The location of the tile on the board
         '''
 
-        left = Display.rect_size * self.col + offset + 1
-        top = Display.rect_size * self.row + Display.margin_top + 1
-        width = Display.spot_size
-        height = Display.spot_size
+        left = display_params.RECT_SIZE * self.col + offset + 1
+        top = display_params.RECT_SIZE * self.row + display_params.MARGIN_TOP + 1
+        width = display_params.SPOT_SIZE
+        height = display_params.SPOT_SIZE
 
         return pygame.Rect(left, top, width, height)
 
-    def draw(self, color=GRAY):
+    def draw(self, color=colors.GRAY):
         '''
         Draws the tile with the given color on the screen
 
@@ -82,7 +84,7 @@ class Tile:
         Must be called after setting all the mines
         '''
 
-        self.color = COLORS[self.value]
+        self.color = colors.COLORS[self.value]
 
     def is_ready_to_reveal(self):
         '''
@@ -101,7 +103,7 @@ class Tile:
         '''
 
         if self.is_ready_to_reveal():
-            self.draw(SOFTWHITE)
+            self.draw(colors.SOFTWHITE)
 
     def left_click_up(self, is_shortcut_click=False):
         '''
@@ -148,11 +150,11 @@ class Tile:
     def show_value(self):
         '''Player left clicked up on an unflagged non-mine. Show the value and mark as shown.'''
         self.is_shown = True
-        text = Display.basic_font.render(' {} '.format(' ' if self.value == 0 else self.value),
-                                         True,
-                                         self.color,
-                                         SOFTWHITE)
-        self.blit(text, background_color=SOFTWHITE)
+        text = display_params.BASIC_FONT.render(' {} '.format(' ' if self.value == 0 else self.value),
+                                                True,
+                                                self.color,
+                                                colors.SOFTWHITE)
+        self.blit(text, background_color=colors.SOFTWHITE)
 
     def toggle_flag(self):
         '''
@@ -165,10 +167,10 @@ class Tile:
         if not self.is_shown:
             self.is_flagged = not self.is_flagged
             if self.is_flagged:
-                self.blit(Pics.flag)
+                self.blit(pics.FLAG)
                 return -1
             else:
-                self.draw(GRAY)
+                self.draw(colors.GRAY)
                 return 1
 
         return 0
@@ -183,17 +185,17 @@ class Tile:
 
         if not self.is_shown:
             if self.is_flagged:
-                self.blit(Pics.flag_scroll)
+                self.blit(pics.FLAG_SCROLL)
             else:
-                self.draw(SOFTWHITE if is_left_mouse_down else LIGHTGRAY)
+                self.draw(colors.SOFTWHITE if is_left_mouse_down else colors.LIGHTGRAY)
 
     def unhover(self):
         '''If the tile is not flagged and not already shown, return to base state.'''
         if not self.is_shown:
             if self.is_flagged:
-                self.blit(Pics.flag)
+                self.blit(pics.FLAG)
             else:
-                self.draw(GRAY)
+                self.draw(colors.GRAY)
 
     def is_fully_flagged(self):
         '''
@@ -215,13 +217,13 @@ class Tile:
 
         if self.is_mine:
             if self.is_flagged:
-                self.blit(Pics.flag_mine)
+                self.blit(pics.FLAG_MINE)
             elif is_losing_tile:
-                self.blit(Pics.red_mine)
+                self.blit(pics.RED_MINE)
             else:
-                self.blit(Pics.mine)
+                self.blit(pics.MINE)
         elif self.is_flagged:
-            self.blit(Pics.flag_x)
+            self.blit(pics.FLAG_X)
 
     def __str__(self):
         return 'Tile(row={}, col={}, value={}, is_mine={})'.format(self.row, self.col, self.value, self.is_mine)

@@ -1,9 +1,10 @@
+'''This module conains the ResetButton class which controls the reset button for the Minesweeper game.'''
+
 import pygame
-from display_params import Display
-from pics import Pics
+import pics
 
 
-class ResetButton:
+class ResetButton(object):
     '''
     This class controls the reset button for the minesweeper game
     '''
@@ -26,11 +27,10 @@ class ResetButton:
 
     def init_draw(self):
         '''Defines the reset button rect and draws the smiley face in the reset button'''
-        screen_width, screen_height = self.screen.get_size()
-        self.rect = pygame.Rect(screen_width / 2 - Pics.smiley.get_width() / 2,
+        self.rect = pygame.Rect(self.screen.get_width() / 2 - pics.SMILEY.get_width() / 2,
                                 5,
-                                Pics.smiley.get_width(),
-                                Pics.smiley.get_height())
+                                pics.SMILEY.get_width(),
+                                pics.SMILEY.get_height())
         self.draw_smiley()
 
     def draw(self, pic):
@@ -46,26 +46,26 @@ class ResetButton:
     def draw_uhoh(self):
         '''Prints the uhoh picture in the reset button'''
         if not self.is_uhoh:
-            self.draw(Pics.uhoh)
+            self.draw(pics.UH_OH)
             self.is_smiley = False
             self.is_uhoh = True
 
     def draw_smiley(self):
         '''Prints the smiley picture in the reset button'''
         if not self.is_smiley and not self.is_hovered:
-            self.draw(Pics.smiley)
+            self.draw(pics.SMILEY)
             self.is_smiley = True
             self.is_uhoh = False
 
     def draw_sunglasses(self):
         '''Prints the sunglasses picture in the reset button'''
-        self.draw(Pics.sunglasses)
+        self.draw(pics.SUNGLASSES)
         self.is_smiley = False
         self.is_uhoh = False
 
     def draw_sad(self):
         '''Prints the sad picture in the reset button'''
-        self.draw(Pics.sad)
+        self.draw(pics.SAD)
         self.is_smiley = False
         self.is_uhoh = False
 
@@ -115,7 +115,7 @@ class ResetButton:
         '''Lost the game'''
         self.is_game_over = True
         self.is_game_lost = True
-        self.draw(Pics.sad)
+        self.draw_sad()
 
     def won_game(self):
         '''Won the game'''

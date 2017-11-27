@@ -1,11 +1,15 @@
+'''
+This module contains the Board class which represents a 2 dimensional array of Tile objects.
+'''
+
 import random
 import pygame
 from tile import Tile
-from display_params import Display
-from colors import GRAY, AQUA
+import display_params
+import colors
 
 
-class Board():
+class Board(object):
     '''
     This class represents the game board - a 2 dimensional array of Tile objects
     '''
@@ -29,7 +33,8 @@ class Board():
         self.location = self.get_location()
 
         # Create all the Tile objects on the board
-        self.create_tiles()
+        self.tile_grid = self.create_tiles()
+        self.flattened_board = self.get_flattened_board()
         self.set_neighbors()
         self.draw()
 
@@ -43,18 +48,33 @@ class Board():
 
         screen_width, screen_height = self.screen.get_size()
 
-        width = self.cols * Display.rect_size
-        height = screen_height - (Display.margin_top + Display.margin_bottom)
+        width = self.cols * display_params.RECT_SIZE
+        height = screen_height - (display_params.MARGIN_TOP + display_params.MARGIN_BOTTOM)
         left = (screen_width - width) / 2.0
 
-        return pygame.Rect(left, Display.margin_top, width, height)
+        return pygame.Rect(left, display_params.MARGIN_TOP, width, height)
 
     def create_tiles(self):
-        '''Creates the 2 dimensional array of Tile objects'''
-        self.board = [[Tile(row, col, self.screen, self.location.left)
-                       for col in xrange(self.cols)]
-                      for row in xrange(self.rows)]
-        self.flattened_board = [tile for row in self.board for tile in row]  # used for easier looping
+        '''
+        Creates the 2 dimensional array of Tile objects
+
+        Returns:
+            list<list<Tile>>: A 2-dimensional array of Tile objects
+        '''
+
+        return [[Tile(row, col, self.screen, self.location.left)
+                 for col in xrange(self.cols)]
+                for row in xrange(self.rows)]
+
+    def get_flattened_board(self):
+        '''
+        Return a list of all the Tiles as a 1-dimensional array. This makes it easier to loop over the Tile objects.
+
+        Returns:
+            list<Tile>: A 1-dimensional array of Tile objects.
+        '''
+
+        return [tile for row in self.tile_grid for tile in row]
 
     def set_neighbors(self):
         '''Set the the neighbor tiles of each tile on the board'''
@@ -67,22 +87,23 @@ class Board():
                 neighbor_x = tile.row + direction[0]
                 neighbor_y = tile.col + direction[1]
                 if 0 <= neighbor_x < self.rows and 0 <= neighbor_y < self.cols:
-                    tile.neighbors.append(self.board[neighbor_x][neighbor_y])
+                    tile.neighbors.append(self.tile_grid[neighbor_x][neighbor_y])
 
     def draw(self):
         '''Draws the board and all its tiles on the screen'''
         for tile in self.flattened_board:
-            tile.draw(GRAY)
+            tile.draw(colors.GRAY)
 
         # Draw horizontal lines
         for i in xrange(self.rows + 1):
-            latitude = self.location.top + i * Display.rect_size
-            pygame.draw.line(self.screen, AQUA, (self.location.left, latitude), (self.location.right, latitude))
+            latitude = self.location.top + i * display_params.RECT_SIZE
+            pygame.draw.line(self.screen, colors.AQUA, (self.location.left, latitude), (self.location.right, latitude))
 
         # Draw vertical lines
         for j in xrange(self.cols + 1):
-            longitude = self.location.left + j * Display.rect_size
-            pygame.draw.line(self.screen, AQUA, (longitude, self.location.top), (longitude, self.location.bottom))
+            longitude = self.location.left + j * display_params.RECT_SIZE
+            pygame.draw.line(self.screen, colors.AQUA, (longitude, self.location.top),
+                             (longitude, self.location.bottom))
 
     def first_click(self, first_click_tile):
         '''
@@ -129,24 +150,24 @@ class Board():
         '''
 
         # Gets the x, y coordinate of the event
-        x, y = event_position
+        x_pos, y_pos = event_position
 
         # Determine the column number the mouse is in (if any)
-        distance_from_left = x - (self.location.left + 1)
-        if distance_from_left % Display.rect_size == Display.spot_size:
+        distance_from_left = x_pos - (self.location.left + 1)
+        if distance_from_left % display_params.RECT_SIZE == display_params.SPOT_SIZE:
             return None
         else:
-            col_num = distance_from_left / Display.rect_size
+            col_num = distance_from_left / display_params.RECT_SIZE
 
         # Determine the row number the mouse is in (if any)
-        distance_from_top = y - (self.location.top + 1)
-        if distance_from_top % Display.rect_size == Display.spot_size:
+        distance_from_top = y_pos - (self.location.top + 1)
+        if distance_from_top % display_params.RECT_SIZE == display_params.SPOT_SIZE:
             return None
         else:
-            row_num = distance_from_top / Display.rect_size
+            row_num = distance_from_top / display_params.RECT_SIZE
 
         if 0 <= row_num < self.rows and 0 <= col_num < self.cols:
-            return self.board[row_num][col_num]
+            return self.tile_grid[row_num][col_num]
         else:
             return None
 

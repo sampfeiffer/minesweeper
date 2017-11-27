@@ -1,4 +1,7 @@
-class TileRevealResult:
+'''This module contains the TileRevealResult class which represents the result of clicking a tile.'''
+
+
+class TileRevealResult(object):
     '''
     This class represents the result of clicking a tile. It supports adding together objects of the class.
     This is useful for combining the results of a shortcut click.

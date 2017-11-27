@@ -1,16 +1,18 @@
+'''Contains the parameters used for the display.'''
+
 import pygame
 
 
-class Display():
-    margin_side = 20
-    margin_top = 40
-    margin_bottom = 65
-    spot_size = 19
-    rect_size = spot_size + 1
-    min_screen_width = 350
+MARGIN_SIDE = 20
+MARGIN_TOP = 40
+MARGIN_BOTTOM = 65
+SPOT_SIZE = 19
+RECT_SIZE = SPOT_SIZE + 1
+MIN_SCREEN_WIDTH = 350
 
-    frame_rate = 50
+FRAME_RATE = 50
 
-    pygame.font.init()
-    basic_font = pygame.font.SysFont(None, 24)
-    counter_font = pygame.font.SysFont(None, 48)
+# Fonts
+pygame.font.init()
+BASIC_FONT = pygame.font.SysFont(None, 24)
+COUNTER_FONT = pygame.font.SysFont(None, 48)

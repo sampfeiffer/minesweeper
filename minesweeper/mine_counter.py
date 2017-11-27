@@ -1,10 +1,12 @@
+'''This module contains the MineCounter class which counts how many mines still need to be flagged'''
+
 import pygame
-from display_params import Display
-from colors import BLACK, GRAY
-from pics import Pics
+import display_params
+import colors
+import pics
 
 
-class MineCounter:
+class MineCounter(object):
     '''
     This class controls the mine counter for the minesweeper game
     '''
@@ -24,13 +26,13 @@ class MineCounter:
 
     def init_draw(self):
         '''Draws the mine symbol and defines the mine counter rect to show the number of unflagged mines left'''
-        screen_width, screen_height = self.screen.get_size()
-        self.screen.blit(Pics.bluemine, (Display.margin_side, screen_height - 52))
-        self.rect = pygame.Rect(Display.margin_side + Pics.bluemine.get_width() + 4, screen_height - 50, 60, 40)
+        screen_height = self.screen.get_height()
+        self.screen.blit(pics.BLUE_MINE, (display_params.MARGIN_SIDE, screen_height - 52))
+        self.rect = pygame.Rect(display_params.MARGIN_SIDE + pics.BLUE_MINE.get_width() + 4, screen_height - 50, 60, 40)
 
     def print_mine_counter(self):
         '''Prints the number of unflagged mines left on the counter rect'''
-        pygame.draw.rect(self.screen, GRAY, self.rect)
+        pygame.draw.rect(self.screen, colors.GRAY, self.rect)
         self.screen.blit(self.get_mine_counter_text(), self.rect)
 
     def get_mine_counter_text(self):
@@ -39,7 +41,7 @@ class MineCounter:
             pygame.font.SysFont: The formatted num_of_unflagged_mines value to show on the screen
         '''
 
-        return Display.counter_font.render(str(self.num_of_unflagged_mines), True, BLACK, GRAY)
+        return display_params.COUNTER_FONT.render(str(self.num_of_unflagged_mines), True, colors.BLACK, colors.GRAY)
 
     def update(self, change_in_unflagged_mines):
         '''

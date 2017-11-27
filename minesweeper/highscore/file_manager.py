@@ -1,9 +1,11 @@
+'''This module contains the FileManager class which manages the high score file.'''
+
 import os
 import csv
 from record import Record
 
 
-class FileManager:
+class FileManager(object):
     '''
     This class manages the high score file
     '''
@@ -12,12 +14,13 @@ class FileManager:
         '''Gets the high score filename and create the file if it does not yet exist'''
 
         # Get the high score filename
-        self.high_score_file = self.get_high_score_file_name()
+        self.high_score_file = FileManager.get_high_score_file_name()
 
         # Create the high score file if it does not already exist
         self.create_high_score_file()
 
-    def get_high_score_file_name(self):
+    @staticmethod
+    def get_high_score_file_name():
         '''
         Gets the high score filename. Creates the 'local' directory in which the high score file sits if needed.
 
@@ -29,11 +32,12 @@ class FileManager:
         project_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         local_dir = os.path.join(project_path, 'local')
 
-        self.create_local_dir(local_dir)
+        FileManager.create_local_dir(local_dir)
 
         return os.path.join(local_dir, 'high_score.csv')
 
-    def create_local_dir(self, local_dir):
+    @staticmethod
+    def create_local_dir(local_dir):
         '''
         Creates the 'local' directory in which the high score file sits if needed
 
@@ -69,9 +73,10 @@ class FileManager:
             lines = csv.reader(f)
 
             # Return each line (except the header) parsed into a Record object
-            return [self.parse_high_score_line(line) for line in list(lines)[1:]]
+            return [FileManager.parse_high_score_line(line) for line in list(lines)[1:]]
 
-    def parse_high_score_line(self, line):
+    @staticmethod
+    def parse_high_score_line(line):
         '''
         Parses a single line of the high score file. This is not intended to work for the header.
 

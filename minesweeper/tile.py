@@ -127,6 +127,8 @@ class Tile(object):
                 else:
                     return TileRevealResult()
             else:
+                if is_shortcut_click:
+                    return TileRevealResult()
                 if self.is_mine:
                     return TileRevealResult(hit_mine=True, mine_tiles=[self])
                 else:

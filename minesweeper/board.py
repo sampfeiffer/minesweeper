@@ -5,6 +5,7 @@ This module contains the Board class which represents a 2 dimensional array of T
 import random
 import pygame
 from tile import Tile
+from tile_reveal_result import TileRevealResult
 import display_params
 import colors
 
@@ -170,6 +171,29 @@ class Board(object):
             return self.tile_grid[row_num][col_num]
         else:
             return None
+
+    def left_click_up(self, clicked_tile, is_shortcut_click=False):
+        '''
+        Handle a left click up on a tile.
+
+        Args:
+            clicked_tile (Tile): The tile that was clicked
+            is_shortcut_click (bool): Is the click a shortcut click?
+        Returns:
+            TileRevealResult: The aggregated tile reveal result from the tile itself and all tiles revealed via the
+                shortcut click
+        '''
+
+        tile_reveal_result = TileRevealResult(additional_tiles_to_reveal=[clicked_tile])
+
+        while len(tile_reveal_result.additional_tiles_to_reveal) > 0:
+            tile = tile_reveal_result.additional_tiles_to_reveal.popleft()
+            tile_reveal_result += tile.left_click_up(is_shortcut_click)
+
+            # Even if the original click was a shortcut click, all reveals afterwards are not shortcut clicks
+            is_shortcut_click = False
+
+        return tile_reveal_result
 
     def update_tile_hover(self, tile, is_left_mouse_down, is_right_mouse_down):
         '''

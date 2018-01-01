@@ -144,7 +144,7 @@ class Game(object):
                 self.update_reset_button()
                 if self.is_new_game:
                     self.first_move(tile)
-                tile_reveal_result = tile.left_click_up()
+                tile_reveal_result = self.board.left_click_up(tile)
                 self.process_tile_reveal(tile_reveal_result)
                 if not self.is_game_over:
                     self.board.update_tile_hover(tile, self.is_left_mouse_down, self.is_right_mouse_down)
@@ -237,9 +237,8 @@ class Game(object):
 
         if not self.is_new_game and not self.is_game_over and tile is not None:
             self.update_reset_button()
-            if tile.is_shown and tile.is_fully_flagged():
-                tile_reveal_result = tile.left_click_up_neighbors()
-                self.process_tile_reveal(tile_reveal_result)
+            tile_reveal_result = self.board.left_click_up(tile, is_shortcut_click=True)
+            self.process_tile_reveal(tile_reveal_result)
 
     def lose_game(self, losing_tiles):
         '''

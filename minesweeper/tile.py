@@ -1,10 +1,12 @@
 '''This module contains the Tile class which represents a single tile on the Minesweeper board.'''
 
 import pygame
+import logging
 from tile_reveal_result import TileRevealResult
 import display_params
 import pics
 import colors
+logger = logging.getLogger(__name__)
 
 
 class Tile(object):
@@ -110,7 +112,7 @@ class Tile(object):
         Reveal the tile if possible and/or trigger the shortcut click
 
         Args:
-            is_shortcut_click (booL): Is the click a shortcut click?
+            is_shortcut_click (bool): Is the click a shortcut click?
         Returns:
             TileRevealResult: The aggregated tile reveal result from the tile itself and all tiles revealed via the
                 shortcut click
@@ -120,8 +122,8 @@ class Tile(object):
             return TileRevealResult()
         else:
             if self.is_shown:
-                if is_shortcut_click:
-                    return self.left_click_up_neighbors()
+                if is_shortcut_click and self.is_fully_flagged():
+                    return TileRevealResult(additional_tiles_to_reveal=self.neighbors)
                 else:
                     return TileRevealResult()
             else:
@@ -132,23 +134,11 @@ class Tile(object):
                     if self.value > 0:
                         return TileRevealResult(non_mines_uncovered=1)
                     else:
-                        return self.left_click_up_neighbors(non_mines_uncovered=1)
-
-    def left_click_up_neighbors(self, non_mines_uncovered=0):
-        '''
-        Left click up all the neighbor tiles of the current tile.
-
-        Args:
-            non_mines_uncovered (int): How many non-mine tiles were uncovered already from this click?
-        Returns:
-            TileRevealResult: The aggregated tile reveal result from the tile itself and all tiles revealed via the
-                shortcut click
-        '''
-
-        return TileRevealResult(non_mines_uncovered) + sum(tile.left_click_up() for tile in self.neighbors)
+                        return TileRevealResult(non_mines_uncovered=1, additional_tiles_to_reveal=self.neighbors)
 
     def show_value(self):
         '''Player left clicked up on an unflagged non-mine. Show the value and mark as shown.'''
+        logger.debug('left_click_up {} show value'.format(str(self)))
         self.is_shown = True
         text = display_params.BASIC_FONT.render(' {} '.format(' ' if self.value == 0 else self.value),
                                                 True,

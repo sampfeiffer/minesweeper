@@ -23,17 +23,29 @@ class Timer(object):
         self.milliseconds = 0
 
         # Print the initial timer
-        self.init_draw()
+        self.rect = self.get_rect()
+        self.draw_clock_symbol()
         self.print_time()
 
-    def init_draw(self):
-        """Draws the clock symbol and defines the timer rect to show the time"""
+        self.counter_clock = None
+
+    def get_rect(self):
+        """
+        Get the pygame.Rect object to show the timer.
+
+        Returns:
+             pygame.Rect: A pygame.Rect object which has the location on the the screen.
+        """
+        screen_width, screen_height = self.screen.get_size()
+        return pygame.Rect(screen_width - display_params.MARGIN_SIDE - 64, screen_height - 50, 60, 40)
+
+    def draw_clock_symbol(self):
+        """Draws the clock symbol"""
         screen_width, screen_height = self.screen.get_size()
         left = screen_width - display_params.MARGIN_SIDE - self.get_timer_text().get_width() - pics.CLOCK.get_width() \
             - 10
         top = screen_height - 52
         self.screen.blit(pics.CLOCK, (left, top))
-        self.rect = pygame.Rect(screen_width - display_params.MARGIN_SIDE - 64, screen_height - 50, 60, 40)
 
     def print_time(self):
         """Prints the time on the timer rect"""

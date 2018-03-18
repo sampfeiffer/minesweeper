@@ -1,4 +1,4 @@
-"""This module contains the HighScore class represents a high score for a given row/col/mine setting"""
+"""This module contains the HighScore class which represents a high score for a given row/col/mine setting"""
 
 from file_manager import FileManager
 from display import Display

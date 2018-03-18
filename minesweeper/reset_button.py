@@ -18,20 +18,24 @@ class ResetButton(object):
         self.screen = screen
 
         self.is_hovered = False
-        self.is_game_over = False
+        self.is_game_won = False
         self.is_game_lost = False
         self.is_smiley = False
         self.is_uhoh = False
 
-        self.init_draw()
-
-    def init_draw(self):
-        """Defines the reset button rect and draws the smiley face in the reset button"""
-        self.rect = pygame.Rect(self.screen.get_width() / 2 - pics.SMILEY.get_width() / 2,
-                                5,
-                                pics.SMILEY.get_width(),
-                                pics.SMILEY.get_height())
+        self.rect = self.get_rect()
         self.draw_smiley()
+
+    def get_rect(self):
+        """
+        Get the pygame.Rect object used for showing the reset button.
+
+        Returns:
+            pygame.Rect: The pygame.Rect object used for showing the reset button.
+        """
+
+        return pygame.Rect(self.screen.get_width() / 2 - pics.SMILEY.get_width() / 2, 5, pics.SMILEY.get_width(),
+                           pics.SMILEY.get_height())
 
     def draw(self, pic):
         """
@@ -106,18 +110,17 @@ class ResetButton(object):
             self.is_hovered = False
             if self.is_game_lost:
                 self.draw_sad()
-            elif self.is_game_over:
+            elif self.is_game_won:
                 self.draw_sunglasses()
             else:
                 self.draw_smiley()
 
     def lost_game(self):
         """Lost the game"""
-        self.is_game_over = True
         self.is_game_lost = True
         self.draw_sad()
 
     def won_game(self):
         """Won the game"""
-        self.is_game_over = True
+        self.is_game_won = True
         self.draw_sunglasses()

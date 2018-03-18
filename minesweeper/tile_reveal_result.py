@@ -1,16 +1,16 @@
-'''This module contains the TileRevealResult class which represents the result of clicking a tile.'''
+"""This module contains the TileRevealResult class which represents the result of clicking a tile."""
 
 from collections import deque
 
 
 class TileRevealResult(object):
-    '''
+    """
     This class represents the result of clicking a tile. It supports adding together objects of the class.
     This is useful for combining the results of a shortcut click.
-    '''
+    """
 
     def __init__(self, non_mines_uncovered=0, hit_mine=False, mine_tiles=None, additional_tiles_to_reveal=None):
-        '''
+        """
         Args:
             non_mines_uncovered (int): The number of mines uncovered by the click. Defaults to 0.
             hit_mine (bool): Did the click hit a mine? Defaults to False.
@@ -18,7 +18,7 @@ class TileRevealResult(object):
                 contained a mine. Defaults to None.
             additional_tiles_to_reveal (list<Tile>|deque<Tile>|None): A list or deque of tiles that should also be
                 revealed or None if no additional tiles need to be revealed. Defaults to None.
-        '''
+        """
 
         self.non_mines_uncovered = non_mines_uncovered
         self.hit_mine = hit_mine
@@ -27,7 +27,7 @@ class TileRevealResult(object):
             deque(additional_tiles_to_reveal)
 
     def __add__(self, other):
-        '''
+        """
         Supports adding TileRevealResult objects together.
 
         Args:
@@ -35,7 +35,7 @@ class TileRevealResult(object):
                 This function can handle any object though, and will just return self if other
                 is not a TileRevealResult object. This is needed for taking the sum of a list of
                 TileRevealResult objects since sum initializes with a 0.
-        '''
+        """
 
         if not isinstance(other, TileRevealResult):
             return self

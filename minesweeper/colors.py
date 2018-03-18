@@ -1,4 +1,4 @@
-'''Defines several colors'''
+"""Defines several colors"""
 
 BLACK = (0, 0, 0)
 GRAY = (128, 128, 128)

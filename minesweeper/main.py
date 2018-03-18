@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-'''Main entry point for running the Minesweeper game.'''
+"""Main entry point for running the Minesweeper game."""
 
 import argparse
 import logging
@@ -8,12 +8,12 @@ from game import Game
 
 
 def parse_args():
-    '''
+    """
     Parses the command line arguments
 
     returns:
         (argparse.Namespace): An object containing all the arguments
-    '''
+    """
 
     parser = argparse.ArgumentParser(description='Starts a Minesweeper game')
 
@@ -31,8 +31,8 @@ def parse_args():
 
 
 def main():
-    '''Parses the command line arguments and starts a Minesweeper game.'''
-    # Confirgure the logger
+    """Parses the command line arguments and starts a Minesweeper game."""
+    # Configure the logger
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)s %(levelname)s: %(message)s',
                         datefmt='%H:%M:%S')
 

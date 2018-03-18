@@ -1,4 +1,4 @@
-'''This module defines several images used in the Minesweeper game'''
+"""This module defines several images used in the Minesweeper game"""
 
 import os
 import pygame

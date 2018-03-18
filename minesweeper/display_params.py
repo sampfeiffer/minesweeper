@@ -1,4 +1,4 @@
-'''Contains the parameters used for the display.'''
+"""Contains the parameters used for the display."""
 
 import pygame
 

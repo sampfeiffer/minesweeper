@@ -120,7 +120,7 @@ class Board(object):
     def set_mines(self, first_click_tile):
         """
         Randomly distributes the mines on the board.
-        Avoids putting mines in on the first clicked tile and all it's neighbors so that the game starts with a cluster.
+        Avoids putting mines in on the first clicked tile and all its neighbors so that the game starts with a cluster.
 
         Args:
             first_click_tile (Tile): The first tile that is clicked by the player
@@ -153,24 +153,38 @@ class Board(object):
         # Gets the x, y coordinate of the event
         x_pos, y_pos = event_position
 
-        # Determine the column number the mouse is in (if any)
-        distance_from_left = x_pos - (self.location.left + 1)
-        if distance_from_left % display_params.RECT_SIZE == display_params.SPOT_SIZE:
-            return None
-        else:
-            col_num = distance_from_left / display_params.RECT_SIZE
+        # Determine the row and column number the mouse is in (if any)
+        row_num = self.get_event_grid_loc(y_pos, self.location.top)
+        col_num = self.get_event_grid_loc(x_pos, self.location.left)
 
-        # Determine the row number the mouse is in (if any)
-        distance_from_top = y_pos - (self.location.top + 1)
-        if distance_from_top % display_params.RECT_SIZE == display_params.SPOT_SIZE:
+        if row_num is None or col_num is None:
             return None
-        else:
-            row_num = distance_from_top / display_params.RECT_SIZE
-
         if 0 <= row_num < self.rows and 0 <= col_num < self.cols:
             return self.tile_grid[row_num][col_num]
         else:
             return None
+
+    @staticmethod
+    def get_event_grid_loc(event_coordinate, starting_edge):
+        """
+        Get where the event occurred on the tile grid as the number of tiles from the starting edge.
+
+        Can also return None if the event was not in a Tile.
+
+        For example, if the starting_edge is self.location.left and the return value is 5, it means that the event
+        occurred 5 tiles from the left.
+
+        Args:
+            event_coordinate (int): The single (x or y) coordinate of the event.
+            starting_edge (int): Either self.location.left or self.location.top.
+        Returns:
+            int|None: The number in the grid where the event happened or None if the event was not in a Tile
+        """
+        distance_from_edge = event_coordinate - (starting_edge + 1)
+        if distance_from_edge % display_params.RECT_SIZE == display_params.SPOT_SIZE:
+            return None
+        else:
+            return distance_from_edge / display_params.RECT_SIZE
 
     @staticmethod
     def left_click_up(clicked_tile, is_shortcut_click=False):
@@ -201,7 +215,7 @@ class Board(object):
         Make tiles react to hover. Remove reaction from tiles no longer hovered.
 
         Args:
-            tile (Tile or None): The tile that is currently being hovered
+            tile (Tile|None): The tile that is currently being hovered
             is_left_mouse_down (bool): Is the left mouse currently pressed down
             is_right_mouse_down (bool): Is the right mouse currently pressed down
         """
@@ -210,19 +224,30 @@ class Board(object):
         self.clear_hovered_tiles_list()
 
         if tile is not None:
-            tile.hover(is_left_mouse_down)
-            self.hovered_tiles.append(tile)
-            if is_both_mouse_down:
-                for neighbor in tile.neighbors:
-                    neighbor.hover(is_left_mouse_down)
+            tile_to_hover = self.get_tiles_to_react(tile, include_neighbors=is_both_mouse_down)
+            self.hovered_tiles.extend(tile_to_hover)
+            for tile in tile_to_hover:
+                tile.hover(is_left_mouse_down)
 
     def clear_hovered_tiles_list(self):
         """Remove reaction from tiles no longer hovered"""
         for tile in self.hovered_tiles:
             tile.unhover()
             self.hovered_tiles.remove(tile)
-            for neighbor in tile.neighbors:
-                neighbor.unhover()
+
+    @staticmethod
+    def get_tiles_to_react(tile, include_neighbors):
+        """
+        Get a list of tiles to act upon. Always include the passed tile. Option to include neighboring tiles as well.
+
+        Args:
+            tile (Tile): The main tile.
+            include_neighbors (bool): Should the neighboring tiles be included?
+        Returns:
+            list<Tile>: A list of Tile objects to act upon.
+        """
+
+        return [tile] + (tile.neighbors if include_neighbors else [])
 
     def reveal_all_tiles(self, losing_tiles):
         """

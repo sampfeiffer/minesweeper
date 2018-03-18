@@ -32,6 +32,7 @@ class Tile(object):
         self.is_shown = False
         self.is_flagged = False
         self.is_mine = False
+        self.is_hovered = False
         self.value = 0
         self.color = None
         self.neighbors = []
@@ -82,8 +83,8 @@ class Tile(object):
 
     def set_color(self):
         """
-        Sets the color of the tile number. Mines and zero values color makes no difference.
-        Must be called after setting all the mines
+        Set the color of the tile number. For tiles with zero value or tiles with mines, the color makes no difference.
+        This functions must be called after setting all the mines.
         """
 
         self.color = colors.COLORS[self.value]
@@ -169,29 +170,32 @@ class Tile(object):
 
     def hover(self, is_left_mouse_down):
         """
-        If the tile is not flagged and not already shown, change the color appropriately.
+        If the tile is not already shown, change the color appropriately.
 
         Args:
             is_left_mouse_down (bool): Is the left mouse down.
         """
-
-        if not self.is_shown:
-            if self.is_flagged:
-                self.blit(pics.FLAG_SCROLL)
-            else:
-                self.draw(colors.SOFTWHITE if is_left_mouse_down else colors.LIGHTGRAY)
+        if not self.is_hovered:
+            self.is_hovered = True
+            if not self.is_shown:
+                if self.is_flagged:
+                    self.blit(pics.FLAG_SCROLL)
+                else:
+                    self.draw(colors.SOFTWHITE if is_left_mouse_down else colors.LIGHTGRAY)
 
     def unhover(self):
-        """If the tile is not flagged and not already shown, return to base state."""
-        if not self.is_shown:
-            if self.is_flagged:
-                self.blit(pics.FLAG)
-            else:
-                self.draw(colors.GRAY)
+        """If the tile is not already shown, return to base state."""
+        if self.is_hovered:
+            self.is_hovered = False
+            if not self.is_shown:
+                if self.is_flagged:
+                    self.blit(pics.FLAG)
+                else:
+                    self.draw(colors.GRAY)
 
     def is_fully_flagged(self):
         """
-        Checks if the neighbor tiles have he same number of flagged as the tile's value
+        Checks if the neighbor tiles have the same number of flagged tiles as the tile's value
 
         Returns:
             bool: Is the tile fully flagged

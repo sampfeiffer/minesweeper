@@ -1,8 +1,8 @@
 """This module contains the Display class which controls the high score display."""
 
 import pygame
-from minesweeper import display_params
-from minesweeper import colors
+import display_params
+import colors
 
 
 class Display(object):
